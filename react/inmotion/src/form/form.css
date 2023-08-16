@@ -1,0 +1,37 @@
+
+.form{
+    overflow:auto;
+    height: 210px;
+    position: relative;
+    top: 10%;
+}
+.form form{
+    position: relative;
+    
+}
+.form form label{
+    display: block;
+    margin-bottom: 12px;
+    font-size: 24px;
+    font-family: monospace;
+    padding: 4px;
+    margin-top: 2px;
+}
+
+.form input{
+    background-color: #fff;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
+    width: 58%;
+    font-size: 24px;
+    border-color: black;
+    border-radius: 20px;
+}
+
+.form form Button{
+    position: relative;
+    top: 10px;
+    left: 0%;
+    font-size: 16px;
+    margin-top: 10px;
+
+}

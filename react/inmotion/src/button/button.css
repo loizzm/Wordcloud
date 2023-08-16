@@ -1,0 +1,14 @@
+.twitter{
+    padding: 10px 20px;
+    background-color: #1da1f2; /* Cor de fundo do Twitter */
+    color: white; /* Cor do texto */
+    border: none;
+    border-radius: 999px; /* Valor alto para criar um botão arredondado */
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.twitter:hover {
+    background-color: #0d91e5; /* Cor mais escura quando o botão é hover */
+}
