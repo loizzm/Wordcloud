@@ -8,3 +8,5 @@ class Word(models.Model):
     def __str__(self):
         return self.word
 # Create your models here.
+class ImageField(models.Model):
+    image = models.ImageField(upload_to='image')

@@ -1,0 +1,15 @@
+*.pyc
+
+*.log
+
+*.tmp
+
+django/inmotion/image/*
+ 
+*.png
+
+.sqlite3
+
+*.json
+
+*.pack

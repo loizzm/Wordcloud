@@ -1,10 +1,11 @@
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from wordcloud import WordCloud
-from .models import Word
+from .models import Word, ImageField
 from datetime import datetime, timedelta
 from collections import Counter
-import base64
+from .serializers import ImageSerializer
+from tempfile import NamedTemporaryFile
 
 
 
@@ -22,23 +23,37 @@ def convert2lowecase(list):
         output.append(obj.word.lower())
     return output
 
-def gerar_imagem(word_freq):
+def gerar_imagem(word_freq, request):
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(word_freq) 
-    wordcloud.to_file('wordcloud.png')
-    with open("wordcloud.png", "rb") as f:
-        encoded_image = base64.b64encode(f.read())
-    return (encoded_image.decode("utf-8"))
-    
+    temp_file = NamedTemporaryFile(delete=False, suffix='.png')
+    wordcloud.to_file(temp_file.name)
+    temp_file.close()
+    temp_file_path = temp_file.name
+    #wordcloud.to_file('wordcloud.png')
+    wordcloud_instance = ImageField()
+    wordcloud_instance.image.save('wordcloud.png', open(temp_file_path, 'rb'))
+    wordcloud_instance.save()
+    serializer = ImageSerializer(data=ImageField.objects.last(), context={"request": request})
+    print(serializer.get_image_url(ImageField.objects.last()))
+    return (serializer.get_image_url(ImageField.objects.last()))
 
+def time_query(time):
+    time_minutos=datetime.now() - timedelta(minutes=time)
+    objects = Word.objects.filter(time__gte=time_minutos)
+    return objects
 
-def gerar_nuvem():
-    dois_minutos=datetime.now() - timedelta(minutes=15)
-    objects = Word.objects.filter(time__gte=dois_minutos)
+def gerar_nuvem(request):
+    objects= time_query(15)
     objetos_lower_case=convert2lowecase(objects)
     word_freq=Counter(objetos_lower_case)
     print(word_freq)
-    return (gerar_imagem(word_freq))
+    return (gerar_imagem(word_freq,request))
 
 @api_view(['GET'])
 def send_nuvem(request):
-    return JsonResponse({'image' : gerar_nuvem()})
+    objects= time_query(15)
+    if (len(objects)!=0):
+        gerar_nuvem(request)
+        return JsonResponse({"image" : gerar_nuvem(request)})
+    else:
+         return JsonResponse({'status' : "negado"})

@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../form';
 import image from '/home/lms/inmotion/react/inmotion/src/wordcloud/OIP.jpeg';
 import './wordcloud.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useRef } from 'react';
 
@@ -42,14 +42,19 @@ const Wordcloud=()=>{
         console.log('Form foi resetado')
         setEnviado(false)
         receberNuvem()
-        scrollToBottom()
 
     }
 
     const scrollToBottom = () => {
-        bottomEl?.current?.scrollIntoView({ behavior: 'smooth' });
+        bottomEl.current?.scrollIntoView({ behavior: 'smooth' , block: 'nearest', inline : 'start'});
       };
+    
+      useEffect(() => {
 
+            setTimeout(() => {
+            scrollToBottom()
+      },450)    
+    },[imageurl]);
 
     return (
             
@@ -63,7 +68,7 @@ const Wordcloud=()=>{
             </div>
             <div ref={bottomEl}>
                 {imageurl ? 
-            <img src= {`data:image/png;base64,${imageurl}`} alt = "wordcloud"/>
+            <img  src= {imageurl} alt = "wordcloud"/>
             : 
             <div>
             </div>  
