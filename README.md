@@ -1,0 +1,1 @@
+Aplicação destinada a criar Nuvens de palavras Dinâmicas
