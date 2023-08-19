@@ -6,6 +6,8 @@
 
 django/inmotion/image/*
  
+django/inmotion/wc/__pycache__/*
+
 *.png
 
 .sqlite3

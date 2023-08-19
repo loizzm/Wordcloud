@@ -5,12 +5,15 @@ import './wordcloud.css'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useRef } from 'react';
+import Config from '../Config';
 
 
 const Wordcloud=()=>{
-
+    const config = new Config();
+    const Configs = config.returnConfig()
     const enviarWord = (form) =>{
-        return axios.get('http://localhost:8000/wc/wordcloud/',
+        const url = Configs['API_URL'] + 'wc/wordcloud/'
+        return axios.get(url,
         {
             params : form,
         })
@@ -19,14 +22,14 @@ const Wordcloud=()=>{
         })
     }
     const receberNuvem = () =>{
-        return axios.get('http://localhost:8000/wc/cloud/')
+        const url = Configs['API_URL'] + 'wc/cloud/'
+        return axios.get(url)
         .then(response => {
           console.log(response.data['image']);
           setImageurl(response.data['image'])
         })
     }
 
-    const [enviado, setEnviado] = useState(false)
     const [value, setValue] = useState('')
     const [imageurl, setImageurl] = useState('')
     const bottomEl = useRef(null);
@@ -34,13 +37,11 @@ const Wordcloud=()=>{
     const aoSubmter = (evento) => {
         evento.preventDefault()
         console.log('Form foi submetido')
-        setEnviado(true)
         enviarWord({valor : value})
     }
 
     const aoResetar = () => {
         console.log('Form foi resetado')
-        setEnviado(false)
         receberNuvem()
 
     }

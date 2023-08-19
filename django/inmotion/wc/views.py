@@ -29,7 +29,6 @@ def gerar_imagem(word_freq, request):
     wordcloud.to_file(temp_file.name)
     temp_file.close()
     temp_file_path = temp_file.name
-    #wordcloud.to_file('wordcloud.png')
     wordcloud_instance = ImageField()
     wordcloud_instance.image.save('wordcloud.png', open(temp_file_path, 'rb'))
     wordcloud_instance.save()
